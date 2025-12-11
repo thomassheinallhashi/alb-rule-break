@@ -60,9 +60,10 @@ resource "aws_lb_listener_rule" "host_rule" {
     target_group_arn = aws_lb_target_group.demo.arn
   }
 
-  # v2-style (invalid on v3+)
+  # v3+ schema
   condition {
-    field  = "host-header"
-    values = ["app.example.com"]
+    host_header {
+      values = ["app.example.com"]
+    }
   }
 }

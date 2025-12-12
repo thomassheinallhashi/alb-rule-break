@@ -2,6 +2,7 @@ data "aws_vpc" "default" {
   default = true
 }
 
+# v2.x uses aws_subnet_ids (plural data source arrived later)
 data "aws_subnet_ids" "default" {
   vpc_id = data.aws_vpc.default.id
 }
@@ -49,16 +50,19 @@ resource "aws_lb_listener" "http" {
     target_group_arn = aws_lb_target_group.demo.arn
   }
 }
+
 resource "aws_lb_listener_rule" "host_rule" {
   listener_arn = aws_lb_listener.http.arn
   priority     = 10
-}
+
   action {
     type             = "forward"
     target_group_arn = aws_lb_target_group.demo.arn
   }
 
- # v3+/v4+/v5 shape
-condition {
-  host_header { values = ["app.example.com"] }
+  # v2-style (invalid on v3+)
+  condition {
+    field  = "host-header"
+    values = ["app.example.com"]
+  }
 }

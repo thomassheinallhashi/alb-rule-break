@@ -63,3 +63,4 @@ resource "aws_lb_listener_rule" "host_rule" {
  condition {
   host_header { values = ["app.example.com"] }
 }
+}

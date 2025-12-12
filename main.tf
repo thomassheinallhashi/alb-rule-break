@@ -58,7 +58,9 @@ resource "aws_lb_listener_rule" "host_rule" {
     target_group_arn = aws_lb_target_group.demo.arn
   }
 
- # v3+/v4+/v5 shape
-condition {
-  host_header { values = ["app.example.com"] }
+  # v2-style (invalid on v3+)
+  condition {
+    field  = "host-header"
+    values = ["app.example.com"]
+  }
 }
